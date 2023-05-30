@@ -50,9 +50,7 @@ curl -X 'GET' \
   -H 'accept: application/json'
 ```
 Ответ:
-```
 ![server_response](https://github.com/sat-brr/bewise-test-task2/assets/102415605/56514984-dafd-4e3c-b4b7-3b0998756c94)
-```
 
 ### Установка и запуск в Docker
 1. Склонировать репозиторий
