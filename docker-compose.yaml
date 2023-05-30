@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  db_converter:
+    container_name: db_converter
+    image: postgres:14.1-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    networks:
+      - custom
+
+  audio_converter:
+    container_name: audio_converter
+    image: audio_converter
+    depends_on:
+      - db_converter
+    command: bash -c "alembic upgrade head && cd app && python3 main.py"
+    env_file:
+      - .env
+    environment:
+      DB_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db_converter:5432/${POSTGRES_DB}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - migrations:/code/migrations
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    networks:
+      - custom
+
+volumes:
+  db-data:
+  migrations:
+networks:
+  custom:
+    driver: bridge
