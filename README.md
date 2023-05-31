@@ -15,7 +15,7 @@
 Запрос:
 ```
 curl -X 'POST' \
-  'http://localhost:8002/user/' \
+  'http://127.0.0.1:8000/user/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -26,27 +26,31 @@ curl -X 'POST' \
 ```
 {
   "id": 1,
-  "access_token": "d672f730-4c50-4ff7-989b-7af1272555b6"
+  "access_token": "8d9b31e3-09af-490e-baa4-fcc07f15a327"
 }
 ```
 #### /record/ POST
 Запрос:
 ```
 curl -X 'POST' \
-  'http://localhost:8002/record/?user_id=1&access_token=d672f730-4c50-4ff7-989b-7af1272555b6' \
+  'http://127.0.0.1:8000/record/' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
+  -F 'user_id=1' \
+  -F 'access_token=8d9b31e3-09af-490e-baa4-fcc07f15a327' \
   -F 'file=@test_audio.wav;type=audio/wav'
 ```
 Ответ:
 ```
-"http://localhost:8002/record?id=e9c33830-ef64-42fe-af77-37f54a3e40b5&user=1"
+{
+  "download_url": "http://127.0.0.1:8000/record?id=2a8915c4-4f6b-404d-acef-b23bc43538f0&user=1"
+}
 ```
 #### /record GET
 Запрос:
 ```
 curl -X 'GET' \
-  'http://localhost:8002/record?id=e9c33830-ef64-42fe-af77-37f54a3e40b5&user=1' \
+  'http://127.0.0.1:8000/record?id=2a8915c4-4f6b-404d-acef-b23bc43538f0&user=1' \
   -H 'accept: application/json'
 ```
 Ответ:
@@ -60,10 +64,10 @@ cd bewise-test-task2
 ```
 2. Создать файл .env и заполнить его.
 ```
-POSTGRES_DB=Название БД
+POSTGRES_DB=Имя БД
 POSTGRES_USER=Имя Пользователя БД
 POSTGRES_PASSWORD=Пароль от пользователя БД
-APP_PORT=Порт, который будет обслуживать веб-сервис(по умолчанию указан 8000)
+APP_PORT=Порт, который будет обслуживать веб-сервис(по умолчанию указывать 8000)
 ```
 3. Построение контейнеров
 ```
