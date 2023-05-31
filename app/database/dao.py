@@ -9,10 +9,10 @@ from app.database.db_models.user import User
 
 
 class UserDAO(User):
-
+    """Объект доступа к данным таблицы users"""
     @classmethod
     async def create_user(
-        cls, session: AsyncSession, name: str
+        cls: User, session: AsyncSession, name: str
     ) -> User | None:
 
         try:
@@ -26,7 +26,8 @@ class UserDAO(User):
 
     @classmethod
     async def check_access_token(
-            cls, session: AsyncSession, user_id: int, access_token: uuid.UUID
+            cls: User, session: AsyncSession,
+            user_id: int, access_token: uuid.UUID
     ) -> User | None:
 
         query = select(cls).where(
@@ -38,7 +39,7 @@ class UserDAO(User):
 
     @classmethod
     async def check_user_exists(
-        cls, session: AsyncSession, name: str
+        cls: User, session: AsyncSession, name: str
     ) -> User | None:
 
         query = select(cls).where(cls.name == name)
@@ -47,9 +48,12 @@ class UserDAO(User):
 
 
 class RecordDAO(Record):
-
+    """Объект доступа к данным таблицы records"""
     @classmethod
-    async def create_record(cls, session: AsyncSession, **kwargs) -> Record:
+    async def create_record(
+        cls: Record, session: AsyncSession, **kwargs
+    ) -> Record:
+
         try:
             new_record = cls(**kwargs)
             session.add(new_record)
