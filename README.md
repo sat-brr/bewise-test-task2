@@ -1,3 +1,5 @@
+[![flake8](https://github.com/sat-brr/bewise-test-task2/actions/workflows/flake8.yml/badge.svg)](https://github.com/sat-brr/bewise-test-task2/actions/workflows/flake8.yml)
+
 # WAVtoMP3-converter
 
 ## Описание
