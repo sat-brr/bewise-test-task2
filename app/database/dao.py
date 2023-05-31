@@ -32,6 +32,7 @@ class UserDAO(User):
         query = select(cls).where(
             and_(cls.id == user_id, cls.access_token == access_token)
         )
+
         result = await session.execute(query)
         return result.scalars().first()
 
@@ -60,7 +61,7 @@ class RecordDAO(Record):
 
     @classmethod
     async def get_record(
-        cls, session: AsyncSession, record_id: uuid.UUID, user_id: int
+        cls: Record, session: AsyncSession, record_id: uuid.UUID, user_id: int
     ) -> Record | None:
 
         query = select(cls).where(

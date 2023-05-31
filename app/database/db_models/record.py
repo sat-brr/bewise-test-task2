@@ -18,4 +18,4 @@ class Record(Base):
     media_type = Column(String, default="audio/mp3")
     content = Column(LargeBinary)
 
-    user = relationship('User', backref='records')
+    user = relationship("User", backref="records", foreign_keys=[user_id])
