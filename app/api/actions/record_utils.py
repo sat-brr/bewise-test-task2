@@ -1,7 +1,7 @@
 import os
 
 import aiofiles
-from fastapi import UploadFile
+from fastapi import HTTPException, UploadFile
 from pydub import AudioSegment
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,8 +22,16 @@ async def write_record_to_db(
     session: AsyncSession, user_id: int, file: UploadFile
 ) -> Record:
 
-    new_name = file.filename.split('.')[0] + '.mp3'
+    name, ext = os.path.splitext(file.filename)
+    if ext.lower() != '.wav':
+        raise HTTPException(
+            status_code=409,
+            detail="The record must be .wav format!"
+        )
+
+    new_filename = f'{name}.mp3'
     content = await format_wav_to_mp3(file)
+
     return await RecordDAO.create_record(
-        session, title=new_name, user_id=user_id, content=content
+        session, title=new_filename, user_id=user_id, content=content
     )

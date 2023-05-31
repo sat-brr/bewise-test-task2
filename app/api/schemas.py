@@ -23,3 +23,7 @@ class UserCreate(BaseModel):
 class ShowUser(BaseModel):
     id: int
     access_token: uuid.UUID
+
+
+class ShowDownloadUrl(BaseModel):
+    download_url: str
