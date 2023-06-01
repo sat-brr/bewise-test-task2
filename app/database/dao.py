@@ -8,15 +8,15 @@ from app.database.db_models.record import Record
 from app.database.db_models.user import User
 
 
-class UserDAO(User):
+class UserDAO:
     """Объект доступа к данным таблицы users"""
     @classmethod
     async def create_user(
-        cls: User, session: AsyncSession, name: str
+        cls, session: AsyncSession, name: str
     ) -> User | None:
 
         try:
-            new_user = cls(name=name)
+            new_user = User(name=name)
             session.add(new_user)
             await session.commit()
             return new_user
@@ -26,12 +26,12 @@ class UserDAO(User):
 
     @classmethod
     async def check_access_token(
-            cls: User, session: AsyncSession,
+            cls, session: AsyncSession,
             user_id: int, access_token: uuid.UUID
     ) -> User | None:
 
-        query = select(cls).where(
-            and_(cls.id == user_id, cls.access_token == access_token)
+        query = select(User).where(
+            and_(User.id == user_id, User.access_token == access_token)
         )
 
         result = await session.execute(query)
@@ -39,23 +39,23 @@ class UserDAO(User):
 
     @classmethod
     async def check_user_exists(
-        cls: User, session: AsyncSession, name: str
+        cls, session: AsyncSession, name: str
     ) -> User | None:
 
-        query = select(cls).where(cls.name == name)
+        query = select(User).where(User.name == name)
         result = await session.execute(query)
         return result.scalars().first()
 
 
-class RecordDAO(Record):
+class RecordDAO:
     """Объект доступа к данным таблицы records"""
     @classmethod
     async def create_record(
-        cls: Record, session: AsyncSession, **kwargs
+        cls, session: AsyncSession, **kwargs
     ) -> Record:
 
         try:
-            new_record = cls(**kwargs)
+            new_record = Record(**kwargs)
             session.add(new_record)
             await session.commit()
             return new_record
@@ -65,10 +65,10 @@ class RecordDAO(Record):
 
     @classmethod
     async def get_record(
-        cls: Record, session: AsyncSession, record_id: uuid.UUID, user_id: int
+        cls, session: AsyncSession, record_id: uuid.UUID, user_id: int
     ) -> Record | None:
 
-        query = select(cls).where(
-            and_(cls.record_id == record_id, cls.user_id == user_id))
+        query = select(Record).where(
+            and_(Record.record_id == record_id, Record.user_id == user_id))
         result = await session.execute(query)
         return result.scalars().first()
